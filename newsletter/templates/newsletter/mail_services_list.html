@@ -1,0 +1,25 @@
+{% extends 'newsletter/base.html' %}
+{% block title %}Рассылки{% endblock %}
+{% block header %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Рассылки</h1>
+</div>
+{% endblock %}
+{% block content %}
+<div class="row text-center">
+
+    {% for mail_service in mail_services %}
+    <div class="col-3">
+        <ul class="list-group">
+            <li class="list-group-item">Статус: {{mail_service.status}}</li>
+            <li class="list-group-item">Получатели: {% for recipient in mail_service.recipients.all %}<p>{{recipient.full_name}}</p>{% endfor %}</li>
+            <li class="list-group-item">Сообщение: {{mail_service.message|truncatechars:100}}</li>
+            <a href="{% url 'newsletter:mail_service_detail' mail_service.pk %}"
+               class="btn btn-primary">
+                Подробнее
+            </a>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

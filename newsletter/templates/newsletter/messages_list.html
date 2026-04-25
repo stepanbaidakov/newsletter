@@ -1,0 +1,24 @@
+{% extends 'newsletter/base.html' %}
+{% block title %}Сообщения{% endblock %}
+{% block header %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Cообщения</h1>
+</div>
+{% endblock %}
+{% block content %}
+<div class="row text-center">
+
+    {% for message in messages %}
+    <div class="col-3">
+        <ul class="list-group">
+            <li class="list-group-item">Тема: {{message.subject}}</li>
+            <li class="list-group-item">Содержимое: {{message.body}}</li>
+            <a href="{% url 'newsletter:message_detail' message.pk %}"
+               class="btn btn-primary">
+                Подробнее
+            </a>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

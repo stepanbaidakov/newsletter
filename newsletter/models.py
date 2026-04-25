@@ -1,17 +1,61 @@
 from django.db import models
-
 # Create your models here.
 
-class Client(models.Model):
-    email = models.EmailField(unique=True)
-    fullname = models.CharField(max_length=100)
-    comment = models.TextField()
+class Recipient(models.Model):
+    email = models.EmailField(unique=True, verbose_name="Почта")
+    full_name = models.CharField(max_length=100, verbose_name="Имя Фамилия")
+    comment = models.TextField(verbose_name="Комментарий")
 
     def __str__(self):
-        return self.fullname
+        return self.full_name
 
     class Meta:
-        verbose_name = "Получатель"
-        verbose_name_plural = "Получатели"
-        db_table = "client"
+        verbose_name = "Recipient"
+        verbose_name_plural = "Recipients"
+        db_table = "Recipient"
 
+
+class Message(models.Model):
+    subject = models.CharField(max_length=100, verbose_name="Тема")
+    body = models.TextField(verbose_name="Тело")
+
+    def __str__(self):
+        return self.subject
+
+    class Meta:
+        verbose_name = "Message"
+        verbose_name_plural = "Messages"
+        db_table = "Message"
+
+class MailService(models.Model):
+
+    # STATUS_CHOICES = [("created", "Создана"), ("started", "Запущена"), ("finished", "Завершена")]
+
+    start_time = models.DateTimeField(verbose_name="Время начала")
+    end_time = models.DateTimeField(verbose_name="Время конца")
+    status = models.CharField(max_length=30, default="Создана", verbose_name="Статус")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение")
+    recipients = models.ManyToManyField(Recipient, verbose_name="Получатель")
+
+    def __str__(self):
+        return f"{self.message.subject} - {self.status}"
+
+    class Meta:
+        verbose_name = "MailService"
+        verbose_name_plural = "MailService"
+        db_table = "MailService"
+
+
+class MailingAttempt(models.Model):
+    attempt_time = models.DateTimeField()
+    status = models.CharField(max_length=15)
+    server_response = models.TextField()
+    mailing = models.ForeignKey(MailService, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.attempt_time} - {self.status}"
+
+    class Meta:
+        verbose_name = "MailingAttempt"
+        verbose_name_plural = "MailingAttempts"
+        db_table = "MailingAttempt"

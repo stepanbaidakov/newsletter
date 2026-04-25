@@ -1,0 +1,22 @@
+{% extends 'newsletter/base.html' %}
+
+{% block title %}Просмотр рассылки{% endblock %}
+{% block header %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Просмотр рассылки</h1>
+</div>
+{% endblock %}
+{% block content %}
+<p>Статус: {{mail_service.status}}</p>
+<p>Время начала: {{mail_service.start_time|date:"d.m.Y H:i"}}</p>
+<p>Время окончания: {{mail_service.end_time|date:"d.m.Y H:i"}}</p>
+<p>Получатели: {% for recipient in mail_service.recipients.all %}{{recipient.full_name}}, {% endfor %}</p>
+<p>Сообщение: {{mail_service.message|truncatechars:100}}</p>
+<a href="{% url 'newsletter:mail_service_edit' mail_service.pk %}" class="btn btn-secondary">Редактировать</a>
+<a href="{% url 'newsletter:mail_service_delete' mail_service.pk %}" class="btn btn-danger">Удалить</a>
+<a href="{% url 'newsletter:mail_services_list' %}" class="btn btn-primary">Вернуться к списку</a>
+<form action="{% url 'newsletter:mail_service_send' mail_service.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-light mt-1">Начать рассылку</button>
+</form>
+{% endblock %}
