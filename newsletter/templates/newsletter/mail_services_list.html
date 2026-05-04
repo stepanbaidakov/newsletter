@@ -12,12 +12,17 @@
     <div class="col-3">
         <ul class="list-group">
             <li class="list-group-item">Статус: {{mail_service.status}}</li>
-            <li class="list-group-item">Получатели: {% for recipient in mail_service.recipients.all %}<p>{{recipient.full_name}}</p>{% endfor %}</li>
+            <li class="list-group-item">Получатели: {% for recipient in mail_service.recipients.all %}<p>
+                {{recipient.full_name}}</p>{% endfor %}
+            </li>
             <li class="list-group-item">Сообщение: {{mail_service.message|truncatechars:100}}</li>
             <a href="{% url 'newsletter:mail_service_detail' mail_service.pk %}"
                class="btn btn-primary">
                 Подробнее
             </a>
+            {% if perms.newsletter.can_disable_mailservice %}
+            <a href="{% url 'newsletter:disable' mail_service.pk %}" class="btn btn-secondary">Отключить</a>
+            {% endif %}
         </ul>
     </div>
     {% endfor %}

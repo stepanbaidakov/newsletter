@@ -10,7 +10,7 @@
 {% block content %}
 <h2>Удалить рассылку</h2>
 
-<p>Вы уверены, что хотите удалить рассылку "{{ mail_service.message.subject }}" в статусе "{{mail_service.mailing_status}}"?</p>
+<p>Вы уверены, что хотите удалить рассылку "{{ mail_service.message.subject }}" в статусе "{{mail_service.status}}"?</p>
 <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Удалить</button>

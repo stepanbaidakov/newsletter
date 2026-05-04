@@ -1,9 +1,8 @@
 from django.urls import path
 from .views import RecipientListView, RecipientCreateView, RecipientDeleteView, RecipientDetailView, \
-    RecipientUpdateView, \
-    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, MailServiceListView, \
-    MailServiceCreateView, MailServiceDeleteView, MailServiceDetailView, MailServiceUpdateView, MailSendingView, \
-    HomePageView
+    RecipientUpdateView, MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, \
+    MailServiceListView, MailServiceCreateView, MailServiceDeleteView, MailServiceDetailView, MailServiceUpdateView, \
+    MailSendingView, HomePageView, MailServiceDisableView, StatisticsView
 
 app_name = "newsletter"
 
@@ -20,9 +19,11 @@ urlpatterns = [
     path("letter/<int:pk>/delete/", MessageDeleteView.as_view(), name="message_delete"),
     path("mailservices/", MailServiceListView.as_view(), name="mail_services_list"),
     path("mailservices/new/", MailServiceCreateView.as_view(), name="mail_service_create"),
-    path("mailservice/<int:pk>/", MailServiceDetailView.as_view(), name="mail_service_detail"),
-    path("mailservice/<int:pk>/edit/", MailServiceUpdateView.as_view(), name="mail_service_edit"),
-    path("mailservice/<int:pk>/delete/", MailServiceDeleteView.as_view(), name="mail_service_delete"),
-    path("mailservice/<int:pk>/send", MailSendingView.as_view(), name="mail_service_send"),
+    path("mailservices/<int:pk>/", MailServiceDetailView.as_view(), name="mail_service_detail"),
+    path("mailservices/<int:pk>/edit/", MailServiceUpdateView.as_view(), name="mail_service_edit"),
+    path("mailservices/<int:pk>/delete/", MailServiceDeleteView.as_view(), name="mail_service_delete"),
+    path("mailservices/<int:pk>/send", MailSendingView.as_view(), name="mail_service_send"),
     path("home/", HomePageView.as_view(), name="home"),
+    path("mailservices/<int:pk>/disable", MailServiceDisableView.as_view(), name="disable"),
+    path("statistics/", StatisticsView.as_view(), name="statistics"),
 ]

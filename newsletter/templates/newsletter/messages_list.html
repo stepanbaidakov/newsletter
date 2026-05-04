@@ -7,13 +7,12 @@
 {% endblock %}
 {% block content %}
 <div class="row text-center">
-
-    {% for message in messages %}
+    {% for letter in letters %}
     <div class="col-3">
         <ul class="list-group">
-            <li class="list-group-item">Тема: {{message.subject}}</li>
-            <li class="list-group-item">Содержимое: {{message.body}}</li>
-            <a href="{% url 'newsletter:message_detail' message.pk %}"
+            <li class="list-group-item">Тема: {{letter.subject}}</li>
+            <li class="list-group-item">Содержимое: {{letter.body}}</li>
+            <a href="{% url 'newsletter:message_detail' letter.pk %}"
                class="btn btn-primary">
                 Подробнее
             </a>

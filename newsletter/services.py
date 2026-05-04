@@ -1,4 +1,4 @@
-from .models import MailingAttempt
+from .models import MailingAttempt, MailService
 from django.utils import timezone
 from config.settings import DEFAULT_FROM_EMAIL
 from django.core.mail import send_mail
@@ -50,3 +50,8 @@ class MailServiceRunner:
                 status = "Не успешно"
                 server_response = f"{type.__name__}: {str(e)}"
             MailingAttempt.objects.create(attempt_time=now, status=status, server_response=server_response, mailing=obj)
+
+class StatisticsService:
+    @staticmethod
+    def attempts_count(user, status):
+        return MailingAttempt.objects.filter(mailing__owner=user, status=status).count()

@@ -22,6 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('', include('newsletter.urls')),
     path('admin/', admin.site.urls),
+    path("", include("users.urls"))
 ]
 
 if settings.DEBUG:

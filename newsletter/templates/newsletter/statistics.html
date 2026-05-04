@@ -1,0 +1,13 @@
+{% extends 'newsletter/base.html' %}
+
+{% block title %}Статистика отправок{% endblock %}
+{% block header %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Статистика отправок</h1>
+</div>
+{% endblock %}
+{% block content %}
+<p>Успшеные попытки отправки соошбщения: {{ successful_attempts }}</p>
+<p>Неуспешные попытки отправки соошбщения: {{ failed_attempts }}</p>
+<a href="{% url 'newsletter:mail_services_list' %}" class="btn btn-primary">Вернуться к рассылкам</a>
+{% endblock %}
