@@ -8,8 +8,7 @@ from django.urls import reverse_lazy
 from .services import MailServiceRunner, StatisticsService
 from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
-
+from django.core.cache import cache
 # Create your views here.
 
 class RecipientCreateView(LoginRequiredMixin, CreateView):
@@ -19,7 +18,10 @@ class RecipientCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("newsletter:recipients_list")
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        owner = self.request.user
+        form.instance.owner = owner
+        cache.delete(f"recipients_user_list_{owner.pk}")
+        cache.delete("recipients_manager_list")
         return super().form_valid(form)
 
 
@@ -35,6 +37,15 @@ class RecipientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         is_manager = user.has_perm("newsletter.view_recipient")
         return is_owner or is_manager
 
+    def get_object(self, queryset =None):
+        pk = self.kwargs.get("pk")
+        cache_key = f"recipient_detail_{pk}"
+        obj = cache.get(cache_key)
+        if not obj:
+            obj = super().get_object(queryset)
+            cache.set(cache_key, obj, 60 * 15)
+        return obj
+
 
 class RecipientUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
     model = Recipient
@@ -48,6 +59,14 @@ class RecipientUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
         product = self.get_object()
         return self.request.user == product.owner
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        owner = self.object.owner
+        cache.delete("recipients_manager_list")
+        cache.delete(f"recipients_user_list_{owner.pk}")
+        cache.delete(f"recipient_detail_{self.object.pk}")
+        return response
+
 
 class RecipientDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
     model = Recipient
@@ -59,6 +78,15 @@ class RecipientDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
         product = self.get_object()
         return self.request.user == product.owner
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        owner = self.object.owner
+        pk = self.object.pk
+        response = super().delete(request, *args, **kwargs)
+        cache.delete("recipients_manager_list")
+        cache.delete(f"recipients_user_list_{owner.pk}")
+        cache.delete(f"recipient_detail_{pk}")
+        return response
 
 class RecipientListView(LoginRequiredMixin, ListView):
     model = Recipient
@@ -68,9 +96,18 @@ class RecipientListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
         if user.has_perm("newsletter.view_recipient"):
-            return Recipient.objects.all()
+            objs = cache.get("recipients_manager_list")
+            if not objs:
+                objs = list(Recipient.objects.all())
+                cache.set("recipients_manager_list", objs, 60 * 15)
+            return objs
         else:
-            return Recipient.objects.filter(owner=self.request.user)
+            cache_key = f"recipients_user_list_{user.pk}"
+            objs = cache.get(cache_key)
+            if not objs:
+                objs = list(Recipient.objects.filter(owner=user))
+                cache.set(cache_key, objs, 60 * 15)
+            return objs
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
@@ -115,7 +152,10 @@ class MailServiceCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("newsletter:mail_services_list")
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        owner = self.request.user
+        form.instance.owner = owner
+        cache.delete(f"mailservices_user_list_{owner.pk}")
+        cache.delete("mailserives_manager_list")
         return super().form_valid(form)
 
 
@@ -125,8 +165,12 @@ class MailServiceDetailView(LoginRequiredMixin,UserPassesTestMixin, DetailView):
     context_object_name = "mail_service"
 
     def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-
+        pk = self.kwargs.get("pk")
+        cache_key = f"mailservice_detail_{pk}"
+        obj = cache.get(cache_key)
+        if not obj:
+            obj = super().get_object(queryset)
+            cache.set(cache_key, obj, 60 * 15)
         MailServiceRunner.update_status(obj)
         return obj
 
@@ -150,6 +194,14 @@ class MailServiceUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         product = self.get_object()
         return self.request.user == product.owner
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        owner = self.object.owner
+        cache.delete("mailservices_manager_list")
+        cache.delete(f"mailservices_user_list_{owner.pk}")
+        cache.delete(f"mailservice_detail_{self.object.pk}")
+        return response
+
 
 class MailServiceDeleteView(LoginRequiredMixin, DeleteView):
     model = MailService
@@ -161,18 +213,37 @@ class MailServiceDeleteView(LoginRequiredMixin, DeleteView):
         product = self.get_object()
         return self.request.user == product.owner
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        owner = self.object.owner
+        pk = self.object.pk
+        response = super().delete(request, *args, **kwargs)
+        cache.delete("mailservices_manager_list")
+        cache.delete(f"mailservices_user_list_{owner.pk}")
+        cache.delete(f"mailservice_detail_{pk}")
+        return response
 
 class MailServiceListView(LoginRequiredMixin, ListView):
     model = MailService
     template_name = "newsletter/mail_services_list.html"
     context_object_name = "mail_services"
 
+
     def get_queryset(self):
         user = self.request.user
         if user.has_perm("newsletter.view_mailservice"):
-            return MailService.objects.filter(is_active=True)
+            objs = cache.get("mailservice_manager_list")
+            if not objs:
+                objs = list(Recipient.objects.all())
+                cache.set("mailservices_manager_list", objs, 60 * 15)
+            return objs
         else:
-            return MailService.objects.filter(owner=user, is_active=True)
+            cache_key = f"mailservices_user_list_{user.pk}"
+            objs = cache.get(cache_key)
+            if not objs:
+                objs = list(Recipient.objects.filter(owner=user))
+                cache.set(cache_key, objs, 60 * 15)
+            return objs
 
 
 class MailSendingView(View):

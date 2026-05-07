@@ -8,7 +8,7 @@
 {% endblock %}
 {% block content %}
 <p>Тема: {{ user.email }}</p>
-<p>Содержимое: {{ user.full_name }}</p>
+<p>Ф.И.О.: {{ user.full_name }}</p>
 <p>Аватар: {{ user.avatar }}</p>
 
 <a href="{% url 'users:profile_edit' user.pk %}" class="btn btn-secondary">Редактировать</a>
