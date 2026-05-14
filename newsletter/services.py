@@ -55,3 +55,7 @@ class StatisticsService:
     @staticmethod
     def attempts_count(user, status):
         return MailingAttempt.objects.filter(mailing__owner=user, status=status).count()
+
+    @staticmethod
+    def all_attempts(user):
+        return MailingAttempt.objects.filter(mailing__owner=user).count()

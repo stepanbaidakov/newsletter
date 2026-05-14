@@ -9,5 +9,6 @@
 {% block content %}
 <p>Успшеные попытки отправки соошбщения: {{ successful_attempts }}</p>
 <p>Неуспешные попытки отправки соошбщения: {{ failed_attempts }}</p>
+<p>Всего попыток: {{ all_attempts }}</p>
 <a href="{% url 'newsletter:mail_services_list' %}" class="btn btn-primary">Вернуться к рассылкам</a>
 {% endblock %}
