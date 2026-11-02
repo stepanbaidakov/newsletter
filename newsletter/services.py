@@ -51,6 +51,7 @@ class MailServiceRunner:
                 server_response = f"{type.__name__}: {str(e)}"
             MailingAttempt.objects.create(attempt_time=now, status=status, server_response=server_response, mailing=obj)
 
+
 class StatisticsService:
     @staticmethod
     def attempts_count(user, status):

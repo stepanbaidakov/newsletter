@@ -5,7 +5,7 @@ from config import settings
 class Recipient(models.Model):
     email = models.EmailField(unique=True, verbose_name="Почта")
     full_name = models.CharField(max_length=100, verbose_name="Имя Фамилия")
-    comment = models.TextField(verbose_name="Комментарий")
+    comment = models.TextField(verbose_name="Комментарий", blank=True, null=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="Recipients", verbose_name="Владелец", blank=True, null=True)
 
     def __str__(self):

@@ -195,14 +195,14 @@ class MessageListView(LoginRequiredMixin, ListView):
         if user.has_perm("newsletter.view_message"):
             objs = cache.get("messages_manager_list")
             if not objs:
-                objs = list(Recipient.objects.all())
+                objs = list(Message.objects.all())
                 cache.set("messages_manager_list", objs, 60 * 15)
             return objs
         else:
             cache_key = f"messages_user_list_{user.pk}"
             objs = cache.get(cache_key)
             if not objs:
-                objs = list(Recipient.objects.filter(owner=user))
+                objs = list(Message.objects.filter(owner=user))
                 cache.set(cache_key, objs, 60 * 15)
             return objs
 
@@ -296,14 +296,14 @@ class MailServiceListView(LoginRequiredMixin, ListView):
         if user.has_perm("newsletter.view_mailservice"):
             objs = cache.get("mailservice_manager_list")
             if not objs:
-                objs = list(Recipient.objects.all())
+                objs = list(MailService.objects.all())
                 cache.set("mailservices_manager_list", objs, 60 * 15)
             return objs
         else:
             cache_key = f"mailservices_user_list_{user.pk}"
             objs = cache.get(cache_key)
             if not objs:
-                objs = list(Recipient.objects.filter(owner=user))
+                objs = list(MailService.objects.filter(owner=user))
                 cache.set(cache_key, objs, 60 * 15)
             return objs
 

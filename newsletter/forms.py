@@ -10,7 +10,7 @@ from .mixins import FormControlMixin
 class RecipientForm(FormControlMixin, forms.ModelForm):
     class Meta:
         model = Recipient
-        fields = '__all__'
+        fields = ["email", "full_name", "comment"]
 
 class MessageForm(FormControlMixin, forms.ModelForm):
     class Meta:
