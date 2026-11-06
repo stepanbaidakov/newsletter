@@ -1,9 +1,11 @@
-from django.utils import timezone
 from datetime import timedelta
+
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
-from newsletter.models import Recipient, Message, MailService
+from newsletter.models import MailService, Message, Recipient
+
 from .mixins import FormControlMixin
 
 
@@ -12,23 +14,24 @@ class RecipientForm(FormControlMixin, forms.ModelForm):
         model = Recipient
         fields = ["email", "full_name", "comment"]
 
+
 class MessageForm(FormControlMixin, forms.ModelForm):
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = "__all__"
 
 
 class MailServiceForm(FormControlMixin, forms.ModelForm):
 
     start_time = forms.DateTimeField(
-        input_formats=['%d.%m.%Y %H:%M'],
-        widget=forms.DateTimeInput(attrs={'placeholder': 'ДД.ММ.ГГГГ ЧЧ:ММ'}),
-        label="Время начала"
+        input_formats=["%d.%m.%Y %H:%M"],
+        widget=forms.DateTimeInput(attrs={"placeholder": "ДД.ММ.ГГГГ ЧЧ:ММ"}),
+        label="Время начала",
     )
     end_time = forms.DateTimeField(
-        input_formats=['%d.%m.%Y %H:%M'],
-        widget=forms.DateTimeInput(attrs={'placeholder': 'ДД.ММ.ГГГГ ЧЧ:ММ'}),
-        label="Время окончания"
+        input_formats=["%d.%m.%Y %H:%M"],
+        widget=forms.DateTimeInput(attrs={"placeholder": "ДД.ММ.ГГГГ ЧЧ:ММ"}),
+        label="Время окончания",
     )
 
     class Meta:
@@ -39,8 +42,6 @@ class MailServiceForm(FormControlMixin, forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["start_time"].widget.format = "%d.%m.%Y %H:%M"
         self.fields["end_time"].widget.format = "%d.%m.%Y %H:%M"
-
-
 
     def clean(self):
         cleaned_data = super().clean()

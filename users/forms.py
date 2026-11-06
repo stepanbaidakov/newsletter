@@ -1,8 +1,14 @@
+from django import forms
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordResetForm,
+    SetPasswordForm,
+    UserCreationForm,
+)
+
 from .mixins import FormControlMixin
 from .models import CustomUser
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, PasswordChangeForm, \
-    SetPasswordForm
-from django import forms
+
 
 class CustomUserCreationForm(FormControlMixin, UserCreationForm):
     class Meta:
@@ -10,8 +16,10 @@ class CustomUserCreationForm(FormControlMixin, UserCreationForm):
         fields = ("email", "password1", "password2", "avatar")
         usable_password = None
 
+
 class CustomLoginForm(FormControlMixin, AuthenticationForm):
     pass
+
 
 class CustomUserChangeForm(FormControlMixin, forms.ModelForm):
     class Meta:

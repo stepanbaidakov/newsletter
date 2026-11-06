@@ -1,8 +1,8 @@
 {% extends 'newsletter/base.html' %}
-{% block title %}Форма профиля{% endblock %}
+{% block title %}Profile form{% endblock %}
 {% block header %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Форма профиля</h1>
+    <h1 class="display-4">Profile form</h1>
 </div>
 {% endblock %}
 
@@ -12,14 +12,14 @@
 <div class="col-lg col-md-6 col-sm-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Форма профиля</h4>
+                    <h4 class="my-0 font-weight-normal">Profile form</h4>
                 </div>
                 <div class="card-body">
                     <form method="post" action="" class="form-floating" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Сохранить</button>
-                        <a href="{% url 'users:users' %}" class="btn btn-secondary">Отмена</a>
+                        <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Save</button>
+                        <a href="{% url 'users:users' %}" class="btn btn-secondary">Cancel</a>
                     </form>
                 </div>
             </div>

@@ -13,7 +13,7 @@ The application is designed to provide the following functionality:
 - Validate campaign start and end times.
 - Calculate mailing campaign statuses dynamically.
 - Launch email campaigns manually through the application interface or command line.
-- Record successful and unsuccessful email delivery attempts.
+- Record successful and failed email delivery attempts.
 - Display dashboard statistics.
 - Register and authenticate users, verify email addresses, and recover passwords.
 - Provide user-specific statistics and reports.
@@ -77,7 +77,7 @@ For each associated recipient, the application:
 Each delivery attempt stores:
 
 - **Attempt time — the date and time of the attempt.**
-- **Status — successful&#x20;**&#x6F;&#x72;**&#x20;unsuccessfu**l.
+- **Status — successful&#x20;**&#x6F;&#x72;**&#x20;failed**.
 - **Server response — the response from the mail server or error details.**
 - **Mailing — a foreign key referencing the associated campaign.**
 
@@ -93,7 +93,7 @@ The home page displays key service metrics:
 
 An active campaign is one whose current status is started and whose permitted sending period includes the current time.
 
-Additional statistics include successful and unsuccessful delivery attempts and the number of messages sent by a user.
+Additional statistics include successful and failed delivery attempts and the number of messages sent by a user.
 
 ### Authentication and Access Control
 

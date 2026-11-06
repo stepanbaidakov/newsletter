@@ -7,8 +7,8 @@
 </div>
 {% endblock %}
 {% block content %}
-<p>Успшеные попытки отправки соошбщения: {{ successful_attempts }}</p>
-<p>Неуспешные попытки отправки соошбщения: {{ failed_attempts }}</p>
-<p>Всего попыток: {{ all_attempts }}</p>
-<a href="{% url 'newsletter:mail_services_list' %}" class="btn btn-primary">Вернуться к рассылкам</a>
+<p>Successful mailing attempts: {{ successful_attempts }}</p>
+<p>Failed mailing attempts: {{ failed_attempts }}</p>
+<p>All attempts: {{ all_attempts }}</p>
+<a href="{% url 'newsletter:mail_services_list' %}" class="btn btn-primary">Back to mailing list</a>
 {% endblock %}

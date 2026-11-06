@@ -8,9 +8,68 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "asgiref (==3.11.1)",
+    "certifi (==2025.11.12)",
+    "charset-normalizer (==3.4.4)",
+    "click (==8.3.1)",
+    "colorama (==0.4.6)",
+    "coverage (==7.13.2)",
+    "django (==6.0.3)",
+    "idna (==3.11)",
+    "iniconfig (==2.3.0)",
+    "mccabe (==0.7.0)",
+    "mypy-extensions (==1.1.0)",
+    "packaging (==25.0)",
+    "pathspec (==0.12.1)",
+    "pillow (==12.2.0)",
+    "platformdirs (==4.5.1)",
+    "pluggy (==1.6.0)",
+    "psycopg2 (==2.9.11)",
+    "psycopg2-binary (==2.9.11)",
+    "pycodestyle (==2.14.0)",
+    "pyflakes (==3.4.0)",
+    "pygments (==2.19.2)",
+    "pytest (==9.0.2)",
+    "python-dotenv (==1.2.2)",
+    "pytokens (==0.3.0)",
+    "redis (==7.4.0)",
+    "requests (==2.32.5)",
+    "sqlparse (==0.5.5)",
+    "tzdata (==2026.1)",
+    "urllib3 (==2.5.0)"
 ]
 
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.12.0"
+flake8 = "^7.3.0"
+isort = "^7.0.0"
+pytest-cov = "^7.0.0"
+
+[tool.black]
+line-length = 119
+extend-exclude = '''
+/(
+    \.git
+  | \.venv
+  | venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 119
+skip_gitignore = true
+extend_skip = [".venv", "venv", "build", "dist"]
+
+[tool.mypy]
+files = ["src", "tests"]
+exclude = '(^|/)(\.venv|venv|build|dist)/'
+ignore_missing_imports = true
+check_untyped_defs = true

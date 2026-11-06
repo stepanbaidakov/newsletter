@@ -13,8 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="customuser",
             name="full_name",
-            field=models.CharField(
-                blank=True, max_length=35, null=True, verbose_name="Ф.И.О."
-            ),
+            field=models.CharField(blank=True, max_length=35, null=True, verbose_name="Ф.И.О."),
         ),
     ]

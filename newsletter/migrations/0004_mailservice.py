@@ -7,24 +7,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('newsletter', '0003_rename_mail_letter_alter_letter_options_and_more'),
+        ("newsletter", "0003_rename_mail_letter_alter_letter_options_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='MailService',
+            name="MailService",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sart_time', models.DateTimeField()),
-                ('end_time', models.DateTimeField()),
-                ('status', models.CharField(max_length=30)),
-                ('message', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='newsletter.letter')),
-                ('recipient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='newsletter.client')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("sart_time", models.DateTimeField()),
+                ("end_time", models.DateTimeField()),
+                ("status", models.CharField(max_length=30)),
+                ("message", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="newsletter.letter")),
+                ("recipient", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="newsletter.client")),
             ],
             options={
-                'verbose_name': 'MailService',
-                'verbose_name_plural': 'MailService',
-                'db_table': 'MailService',
+                "verbose_name": "MailService",
+                "verbose_name_plural": "MailService",
+                "db_table": "MailService",
             },
         ),
     ]

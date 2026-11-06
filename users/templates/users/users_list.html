@@ -1,8 +1,8 @@
 {% extends 'newsletter/base.html' %}
-{% block title %}Пользователи{% endblock %}
+{% block title %}User list{% endblock %}
 {% block header %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Пользователи</h1>
+    <h1 class="display-4">User list</h1>
 </div>
 {% endblock %}
 {% block content %}
@@ -11,15 +11,15 @@
     {% for user in users %}
     <div class="col-3">
         <ul class="list-group">
-            <li class="list-group-item">Тема: {{user.email}}</li>
-            <li class="list-group-item">Содержимое: {{user.fullname}}</li>
+            <li class="list-group-item">Email: {{user.email}}</li>
+            <li class="list-group-item">Full name: {{user.fullname}}</li>
             <a href="{% url 'users:profile' user.pk %}"
                class="btn btn-primary">
-                Подробнее
+                More details
             </a>
             <form action="{% url 'users:block' user.pk %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-secondary mt-1">Зоблокировать</button>
+                <button type="submit" class="btn btn-secondary mt-1">Block</button>
             </form>
         </ul>
     </div>

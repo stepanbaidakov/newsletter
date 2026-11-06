@@ -1,8 +1,26 @@
 from django.urls import path
-from .views import RecipientListView, RecipientCreateView, RecipientDeleteView, RecipientDetailView, \
-    RecipientUpdateView, MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, \
-    MailServiceListView, MailServiceCreateView, MailServiceDeleteView, MailServiceDetailView, MailServiceUpdateView, \
-    MailSendingView, HomePageView, MailServiceDisableView, StatisticsView
+
+from .views import (
+    HomePageView,
+    MailSendingView,
+    MailServiceCreateView,
+    MailServiceDeleteView,
+    MailServiceDetailView,
+    MailServiceDisableView,
+    MailServiceListView,
+    MailServiceUpdateView,
+    MessageCreateView,
+    MessageDeleteView,
+    MessageDetailView,
+    MessageListView,
+    MessageUpdateView,
+    RecipientCreateView,
+    RecipientDeleteView,
+    RecipientDetailView,
+    RecipientListView,
+    RecipientUpdateView,
+    StatisticsView,
+)
 
 app_name = "newsletter"
 

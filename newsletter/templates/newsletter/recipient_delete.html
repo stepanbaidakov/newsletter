@@ -1,19 +1,17 @@
 {% extends 'newsletter/base.html' %}
 
-{% block title %}Удаление{% endblock %}
+{% block title %}Delete recipient{% endblock %}
 {% block header %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Удаление</h1>
+    <h1 class="display-4">Delete recipient</h1>
 </div>
 {% endblock %}
 
 {% block content %}
-<h2>Удалить клиента</h2>
-
-<p>Вы уверены, что хотите удалить получателя "{{ recipient.full_name }}"?</p>
+<p>Are you sure you want to delete the recipient "{{ recipient.full_name }}"?</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Удалить</button>
-    <a href="{% url 'newsletter:recipient_detail' recipient.pk %}" class="btn btn-secondary">Отмена</a>
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'newsletter:recipient_detail' recipient.pk %}" class="btn btn-secondary">Cancel</a>
 </form>
 {% endblock %}

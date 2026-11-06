@@ -1,12 +1,22 @@
 from django.db import models
+
 from config import settings
+
 # Create your models here.
 
+
 class Recipient(models.Model):
-    email = models.EmailField(unique=True, verbose_name="Почта")
-    full_name = models.CharField(max_length=100, verbose_name="Имя Фамилия")
-    comment = models.TextField(verbose_name="Комментарий", blank=True, null=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="Recipients", verbose_name="Владелец", blank=True, null=True)
+    email = models.EmailField(unique=True, verbose_name="email")
+    full_name = models.CharField(max_length=100, verbose_name="full name")
+    comment = models.TextField(verbose_name="comment", blank=True, null=True)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="Recipients",
+        verbose_name="owner",
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.full_name
@@ -18,9 +28,11 @@ class Recipient(models.Model):
 
 
 class Message(models.Model):
-    subject = models.CharField(max_length=100, verbose_name="Тема")
-    body = models.TextField(verbose_name="Тело")
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="messages", blank=True, null=True)
+    subject = models.CharField(max_length=100, verbose_name="subject")
+    body = models.TextField(verbose_name="content")
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="messages", blank=True, null=True
+    )
 
     def __str__(self):
         return self.subject
@@ -30,13 +42,21 @@ class Message(models.Model):
         verbose_name_plural = "Messages"
         db_table = "Message"
 
+
 class MailService(models.Model):
-    start_time = models.DateTimeField(verbose_name="Время начала")
-    end_time = models.DateTimeField(verbose_name="Время конца")
-    status = models.CharField(max_length=30, default="Создана", verbose_name="Статус")
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="Сообщение", related_name="messages")
-    recipients = models.ManyToManyField(Recipient, verbose_name="Получатель")
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="MailServices", verbose_name="Владелец", blank=True, null=True)
+    start_time = models.DateTimeField(verbose_name="start time")
+    end_time = models.DateTimeField(verbose_name="end time")
+    status = models.CharField(max_length=30, default="Created", verbose_name="status")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name="message", related_name="messages")
+    recipients = models.ManyToManyField(Recipient, verbose_name="recipients")
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="MailServices",
+        verbose_name="owner",
+        blank=True,
+        null=True,
+    )
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -47,6 +67,7 @@ class MailService(models.Model):
         verbose_name_plural = "MailService"
         db_table = "MailService"
         permissions = [("can_disable_mailservice", "Can disable mailservice")]
+
 
 class MailingAttempt(models.Model):
     attempt_time = models.DateTimeField()

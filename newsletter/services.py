@@ -1,7 +1,9 @@
-from .models import MailingAttempt, MailService
-from django.utils import timezone
-from config.settings import DEFAULT_FROM_EMAIL
 from django.core.mail import send_mail
+from django.utils import timezone
+
+from config.settings import DEFAULT_FROM_EMAIL
+
+from .models import MailingAttempt
 
 
 class MailServiceRunner:
@@ -11,10 +13,10 @@ class MailServiceRunner:
         now = timezone.now()
 
         if obj.start_time > now:
-            return "Создана"
+            return "Created"
         elif obj.start_time <= now <= obj.end_time:
-            return "Запущена"
-        return "Завершена"
+            return "Started"
+        return "Finished"
 
     @staticmethod
     def update_status(obj):
@@ -28,8 +30,9 @@ class MailServiceRunner:
     @staticmethod
     def run(obj):
         now = timezone.now()
-        if not obj.start_time < now < obj.end_time:
-            raise ValueError("В текущее время рассылка не доступна")
+        MailServiceRunner.update_status(obj)
+        if not obj.status == "started":
+            raise ValueError("Mailing is not currently not available.")
         recipients = obj.recipients.all()
 
         for recipient in recipients:
@@ -40,16 +43,18 @@ class MailServiceRunner:
                 recipient_list = [recipient.email]
                 result = send_mail(subject, message, from_email, recipient_list)
                 if result:
-                    status = "Успешно"
-                    server_response = "250 OK: Message accepted"
+                    status = "successful"
+                    server_response = "250 OK: Email sent"
                 else:
-                    status = "Не успешно"
+                    status = "failed"
                     server_response = "Email not sent"
 
             except Exception as e:
-                status = "Не успешно"
+                status = "failed"
                 server_response = f"{type.__name__}: {str(e)}"
-            MailingAttempt.objects.create(attempt_time=now, status=status, server_response=server_response, mailing=obj)
+            MailingAttempt.objects.create(
+                attempt_time=now, status=status, server_response=server_response, mailing=obj
+            )
 
 
 class StatisticsService:

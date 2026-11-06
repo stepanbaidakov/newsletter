@@ -6,20 +6,20 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('newsletter', '0002_alter_mail_table'),
+        ("newsletter", "0002_alter_mail_table"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Mail',
-            new_name='Letter',
+            old_name="Mail",
+            new_name="Letter",
         ),
         migrations.AlterModelOptions(
-            name='letter',
-            options={'verbose_name': 'Letter', 'verbose_name_plural': 'Letters'},
+            name="letter",
+            options={"verbose_name": "Letter", "verbose_name_plural": "Letters"},
         ),
         migrations.AlterModelTable(
-            name='letter',
-            table='Letter',
+            name="letter",
+            table="Letter",
         ),
     ]

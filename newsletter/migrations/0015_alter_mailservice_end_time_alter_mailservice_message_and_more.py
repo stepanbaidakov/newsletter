@@ -28,16 +28,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="mailservice",
             name="recipients",
-            field=models.ManyToManyField(
-                to="newsletter.recipient", verbose_name="Получатель"
-            ),
+            field=models.ManyToManyField(to="newsletter.recipient", verbose_name="Получатель"),
         ),
         migrations.AlterField(
             model_name="mailservice",
             name="status",
-            field=models.CharField(
-                default="Создана", max_length=30, verbose_name="Статус"
-            ),
+            field=models.CharField(default="Создана", max_length=30, verbose_name="Статус"),
         ),
         migrations.AlterField(
             model_name="message",

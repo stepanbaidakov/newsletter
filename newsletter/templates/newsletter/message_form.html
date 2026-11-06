@@ -1,9 +1,9 @@
 {% extends 'newsletter/base.html' %}
 
-{% block title %}Форма cообщения{% endblock %}
+{% block title %}Message form{% endblock %}
 {% block header %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Форма сообщения</h1>
+    <h1 class="display-4">Message form</h1>
 </div>
 {% endblock %}
 {% block content %}
@@ -11,15 +11,15 @@
     <div class="col-lg col-md-6 col-sm-12">
         <div class="card mb-4 box-shadow">
             <div class="card-header">
-                <h4 class="my-0 font-weight-normal">Добавить/Изменить сообщение</h4>
+                <h4 class="my-0 font-weight-normal">Add/Edit Message</h4>
             </div>
             <div class="card-body">
                 <form method="post" action="" class="form-floating" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.non_field_errors }}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Сохранить</button>
-                    <a href="{% url 'newsletter:messages_list' %}" class="btn btn-secondary">Отмена</a>
+                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Save</button>
+                    <a href="{% url 'newsletter:messages_list' %}" class="btn btn-secondary">Cancel</a>
                 </form>
             </div>
         </div>

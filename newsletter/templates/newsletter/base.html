@@ -11,12 +11,12 @@
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     {% block header %}{% endblock %}
     {% if messages %}
-  {% for message in messages %}
+    {% for message in messages %}
     <div class="alert alert-{{ message.tags }}">
-      {{ message }}
+        {{ message }}
     </div>
-  {% endfor %}
-{% endif %}
+    {% endfor %}
+    {% endif %}
 </div>
 <div class="container">
     {% block content %}{% endblock %}
@@ -24,28 +24,28 @@
         <div class="row">
             <div class="col-12 col-md">
                 SkyStore
-                <small class="d-block mb-3 text-muted">&copy; 2023</small>
+                <small class="d-block mb-3 text-muted">&copy; 2026</small>
             </div>
             <div class="col-6 col-md">
-                <h5>Категории</h5>
+                <h5>Categories</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Рассылки</a></li>
-                    <li><a class="text-muted" href="#">Телеграм боты</a></li>
-                    <li><a class="text-muted" href="#">Полезные утилиты</a></li>
-                    <li><a class="text-muted" href="#">Веб-приложения</a></li>
-                    <li><a class="text-muted" href="#">Микросервисы</a></li>
+                    <li><a class="text-muted" href="#">Mailing Campaigns</a></li>
+                    <li><a class="text-muted" href="#">Telegram Bots</a></li>
+                    <li><a class="text-muted" href="#">Useful Utilities</a></li>
+                    <li><a class="text-muted" href="#">Web Applications</a></li>
+                    <li><a class="text-muted" href="#">Microservices</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md">
-                <h5>Дополнительно</h5>
+                <h5>Additional Information</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Мы пишем</a></li>
+                    <li><a class="text-muted" href="#">Our Blog</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md">
-                <h5>О нас</h5>
+                <h5>About Us</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="/contacts/">Контакты</a></li>
+                    <li><a class="text-muted" href="/contacts/">Contact Us</a></li>
                 </ul>
             </div>
         </div>

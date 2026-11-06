@@ -1,15 +1,18 @@
 from django.contrib import messages
-from django.http import HttpResponseForbidden
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import ListView, DetailView, View
-from .forms import RecipientForm, MessageForm, MailServiceForm
-from .models import Recipient, Message, MailService, MailingAttempt
-from django.urls import reverse_lazy
-from .services import MailServiceRunner, StatisticsService
-from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.cache import cache
+from django.http import HttpResponseForbidden
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView, View
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from .forms import MailServiceForm, MessageForm, RecipientForm
+from .models import MailingAttempt, MailService, Message, Recipient
+from .services import MailServiceRunner, StatisticsService
+
 # Create your views here.
+
 
 class RecipientCreateView(LoginRequiredMixin, CreateView):
     model = Recipient
@@ -37,7 +40,7 @@ class RecipientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         is_manager = user.has_perm("newsletter.view_recipient")
         return is_owner or is_manager
 
-    def get_object(self, queryset =None):
+    def get_object(self, queryset=None):
         pk = self.kwargs.get("pk")
         cache_key = f"recipient_detail_{pk}"
         obj = cache.get(cache_key)
@@ -47,7 +50,7 @@ class RecipientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return obj
 
 
-class RecipientUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
+class RecipientUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Recipient
     template_name = "newsletter/recipient_form.html"
     form_class = RecipientForm
@@ -68,7 +71,7 @@ class RecipientUpdateView(LoginRequiredMixin,UserPassesTestMixin, UpdateView):
         return response
 
 
-class RecipientDeleteView(LoginRequiredMixin,UserPassesTestMixin, DeleteView):
+class RecipientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Recipient
     template_name = "newsletter/recipient_delete.html"
     context_object_name = "recipient"
@@ -221,7 +224,7 @@ class MailServiceCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class MailServiceDetailView(LoginRequiredMixin,UserPassesTestMixin, DetailView):
+class MailServiceDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = MailService
     template_name = "newsletter/mail_service_detail.html"
     context_object_name = "mail_service"
@@ -296,14 +299,14 @@ class MailServiceListView(LoginRequiredMixin, ListView):
         if user.has_perm("newsletter.view_mailservice"):
             objs = cache.get("mailservice_manager_list")
             if not objs:
-                objs = list(MailService.objects.all())
+                objs = list(MailService.objects.filter(is_active=True))
                 cache.set("mailservices_manager_list", objs, 60 * 15)
             return objs
         else:
             cache_key = f"mailservices_user_list_{user.pk}"
             objs = cache.get(cache_key)
             if not objs:
-                objs = list(MailService.objects.filter(owner=user))
+                objs = list(MailService.objects.filter(owner=user, is_active=True))
                 cache.set(cache_key, objs, 60 * 15)
             return objs
 
@@ -313,10 +316,10 @@ class MailSendingView(View):
         obj = MailService.objects.get(pk=pk)
         try:
             MailServiceRunner.run(obj)
-            messages.success(request, "Рассылка успешно запущена")
+            messages.success(request, "Mailing successful started")
 
         except Exception as e:
-            messages.error(request, f"Ошибка: {e}")
+            messages.error(request, f"Error: {e}")
 
         return redirect("newsletter:mail_services_list")
 
@@ -328,7 +331,7 @@ class HomePageView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        active_mail_services = MailService.objects.filter(status="Запущена")
+        active_mail_services = MailService.objects.filter(status="Started")
         recipients = Recipient.objects.all()
         context["active_mail_services"] = active_mail_services
         context["recipients"] = recipients
@@ -339,7 +342,7 @@ class MailServiceDisableView(View):
     def post(self, request, pk):
         mail_service = MailService.objects.get(pk=pk)
         if not request.user.has_perm("newsletter.can_disable_mailservice"):
-            return HttpResponseForbidden("У Вас нет прав на отключения сервиса")
+            return HttpResponseForbidden("You don't have permission to disable a mailing.")
         mail_service.is_active = False
         mail_service.save()
         return redirect("newsletter:mail_services_list")
@@ -353,7 +356,7 @@ class StatisticsView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        context["successful_attempts"] = StatisticsService.attempts_count(user, "Успешно")
-        context["failed_attempts"] = StatisticsService.attempts_count(user, "Не успешно")
+        context["successful_attempts"] = StatisticsService.attempts_count(user, "successful")
+        context["failed_attempts"] = StatisticsService.attempts_count(user, "failed")
         context["all_attempts"] = StatisticsService.all_attempts(user)
         return context

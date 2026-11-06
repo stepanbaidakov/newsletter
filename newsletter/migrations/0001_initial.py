@@ -7,35 +7,34 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Client',
+            name="Client",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('full_name', models.CharField(max_length=100)),
-                ('comment', models.TextField()),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("email", models.EmailField(max_length=254, unique=True)),
+                ("full_name", models.CharField(max_length=100)),
+                ("comment", models.TextField()),
             ],
             options={
-                'verbose_name': 'Client',
-                'verbose_name_plural': 'Clients',
-                'db_table': 'Client',
+                "verbose_name": "Client",
+                "verbose_name_plural": "Clients",
+                "db_table": "Client",
             },
         ),
         migrations.CreateModel(
-            name='Mail',
+            name="Mail",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subject', models.CharField(max_length=100)),
-                ('body', models.TextField()),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("subject", models.CharField(max_length=100)),
+                ("body", models.TextField()),
             ],
             options={
-                'verbose_name': 'Mail',
-                'verbose_name_plural': 'Mails',
-                'db_table': 'mail',
+                "verbose_name": "Mail",
+                "verbose_name_plural": "Mails",
+                "db_table": "mail",
             },
         ),
     ]
