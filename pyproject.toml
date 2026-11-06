@@ -59,6 +59,7 @@ extend-exclude = '''
   | venv
   | build
   | dist
+  | migrations
 )/
 '''
 
@@ -67,6 +68,7 @@ profile = "black"
 line_length = 119
 skip_gitignore = true
 extend_skip = [".venv", "venv", "build", "dist"]
+skip_glob = ["**/migrations/*.py"]
 
 [tool.mypy]
 files = ["src", "tests"]
