@@ -1,0 +1,15 @@
+{% extends 'newsletter/base.html' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block header %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Home page</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<p>Total number of mailings: {{ mail_services|length }}</p>
+<p>Number of active mailings: {{ active_mail_services|length }}</p>
+<p>Total number of unique recipients: {{ recipients|length }}</p>
+{% endblock %}

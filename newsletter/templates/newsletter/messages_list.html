@@ -1,0 +1,23 @@
+{% extends 'newsletter/base.html' %}
+{% block title %}Messages{% endblock %}
+{% block header %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Messages</h1>
+</div>
+{% endblock %}
+{% block content %}
+<div class="row text-center">
+    {% for letter in letters %}
+    <div class="col-3">
+        <ul class="list-group">
+            <li class="list-group-item">Subject: {{letter.subject}}</li>
+            <li class="list-group-item">Content: {{letter.body}}</li>
+            <a href="{% url 'newsletter:message_detail' letter.pk %}"
+               class="btn btn-primary">
+                More details
+            </a>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
